@@ -7,12 +7,19 @@ import Appointment from './components/Appointment.vue';
 import Scheduled from './components/Scheduled.vue';
 import Processed from './components/Processed.vue';
 import SimulationResult from './components/SimulationResult.vue';
+import UserForm from './components/UserForm.vue';
+
 
 Vue.use(Router)
 
 export default new Router({
     mode: "history",
     routes: [
+        {
+            path: '/',
+            name: 'userform',
+            component: UserForm
+        },
         {
             path: '/profile',
             name: 'ProfileInformations',
@@ -22,6 +29,11 @@ export default new Router({
             path: '/simulator',
             name: 'Simulator',
             component: Simulator
+        },
+        {
+            path: '/result',
+            name: 'SimutationResult',
+            component: SimulationResult
         },
         {
             path: '/appointment',
@@ -37,11 +49,6 @@ export default new Router({
             path: '/processed',
             name: 'Processed',
             component: Processed
-        },
-        {
-            path: '/simulationResult',
-            name: 'SimulationResult',
-            component: SimulationResult
         }
     ]
 })

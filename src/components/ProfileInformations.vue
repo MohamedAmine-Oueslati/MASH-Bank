@@ -1,4 +1,45 @@
 <template>   
+        <div class="page-container">
+    <md-app>
+      <md-app-toolbar class="md-primary">
+        <span class="md-title">MY DASHBORD</span>
+        <span class="space"></span>
+        <span class="md-mail">E-mail</span>
+      </md-app-toolbar>
+
+      <md-app-drawer md-permanent="clipped">
+        <md-list>
+          
+          <md-list-item>
+            <md-icon>account_box</md-icon>
+            <router-link to="/profile">
+            <span class="md-list-item-text">Profile informations</span>
+            </router-link>
+          </md-list-item>
+
+          <md-list-item>
+            <md-icon>exposure</md-icon>
+            <router-link to="/simulator">
+            <span class="md-list-item-text">Simulator</span>
+            </router-link>
+          </md-list-item>
+
+          <md-list-item>
+            <md-icon>today</md-icon>
+            <router-link to="/appointment">
+            <span class="md-list-item-text">Make an appointment</span>
+            </router-link>
+          </md-list-item>
+
+          <md-list-item>
+            <md-icon>alarm</md-icon>
+            <router-link to="/scheduled">
+            <span class="md-list-item-text">My scheduled appointments</span>
+            </router-link>
+          </md-list-item>
+        </md-list>
+      </md-app-drawer>
+      <md-app-content>
         <div class="personal">
           <h2>My Personal informations</h2>
           <hr class="solid">
@@ -18,7 +59,12 @@
           <h4>------</h4>
           <md-button class="md-raised" :md-ripple="false">Edit</md-button>
           <md-button class="md-raised md-primary">Save</md-button>
-        </div>
+            </div>
+           </md-app-content>
+           
+    </md-app>
+  </div>
+
 </template>
 
 <script>
@@ -34,6 +80,19 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
+  .md-app {
+    min-height: 350px;
+    border: 1px solid rgba(#000, .12);
+  }
+
+  .md-drawer {
+    width: 230px;
+    max-width: calc(100vw - 125px);
+  }
+  .md-mail {
+    margin-left: 80%;
+    font-size: 25px;
+  }
   .personal {
     border:2px solid black;
     height: 100%;
