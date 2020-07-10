@@ -1,5 +1,5 @@
 <template>
-<div class="page-container">
+  <div class="page-container">
     <md-app>
       <md-app-toolbar class="md-primary">
         <span class="md-title">MY DASHBORD</span>
@@ -39,71 +39,96 @@
         </md-list>
       </md-app-drawer>
       <md-app-content>
-  <div class="personal">
-    <h2>Simulation Result</h2>
-          <hr class="solid">
-    <md-content>
-      <div>
-    <md-table v-model="people" md-card @md-selected="onSelect">
-      <md-table-toolbar>
-        <h1 class="md-title"></h1>
-      </md-table-toolbar>
+        <div class="personal">
+          <h2>Simulation Result</h2>
+          <hr class="solid" />
+          <md-content>
+            <div>
+              <md-table v-model="people" md-card @md-selected="onSelect">
+                <!-- <md-table-toolbar>
+                  <h1 class="md-title"></h1>
+                </md-table-toolbar> -->
 
-      <md-table-toolbar slot="md-table-alternate-header" slot-scope="{ count }">
-        <div class="md-toolbar-section-start">{{ getAlternateLabel(count) }}</div>
+                <md-table-toolbar slot="md-table-alternate-header" slot-scope="{ count }">
+                  <div class="md-toolbar-section-start">{{ getAlternateLabel(count) }}</div>
 
-        <div class="md-toolbar-section-end">
-          <md-button class="md-icon-button">
-            <md-icon>delete</md-icon>
-          </md-button>
+                  <div class="md-toolbar-section-end">
+                    <md-button class="md-icon-button">
+                      <md-icon>delete</md-icon>
+                    </md-button>
+                  </div>
+                </md-table-toolbar>
+                <md-table-row>
+                  <md-table-head>Amount</md-table-head>
+                  <md-table-head>Repayment Period</md-table-head>
+                  <md-table-head>Number Of Years</md-table-head>
+                  <md-table-head>Rate</md-table-head>
+                  <md-table-head>Deadlines</md-table-head>
+                  <md-table-head>Delete</md-table-head>
+                </md-table-row>
+                <md-table-row
+                  v-for="(element,index) in total"
+                  v-bind:key="element"
+                  slot="md-table-row"
+                  md-selectable="multiple"
+                  md-auto-select
+                >
+                  <md-table-cell>{{ element.amount }}</md-table-cell>
+                  <md-table-cell>{{ element.frequency }}</md-table-cell>
+                  <md-table-cell>{{ element.numOfYears }}</md-table-cell>
+                  <md-table-cell>%</md-table-cell>
+                  <md-table-cell></md-table-cell>
+                  <md-table-cell><span @click="remove(index)"><md-icon>delete</md-icon></span></md-table-cell>
+                </md-table-row>
+              </md-table>
+            </div>
+          </md-content>
         </div>
-      </md-table-toolbar>
-
-      <md-table-row slot="md-table-row" slot-scope="{ item }" md-selectable="multiple" md-auto-select>
-        <md-table-cell md-label="Amount" md-sort-by="Amount">{{ item.Amount }}</md-table-cell>
-        <md-table-cell md-label="RepaymentPeriod" md-sort-by="RepaymentPeriod">{{ item.RepaymentPeriod }}</md-table-cell>
-        <md-table-cell md-label="NumberOfYears" md-sort-by="NumberOfYears">{{ item.NumberOfYears }}</md-table-cell>
-        <md-table-cell md-label="Rate" md-sort-by="Rate">{{ item.Rate }}</md-table-cell>
-        <md-table-cell md-label="Deadlines" md-sort-by="Deadlines">{{ item.Deadlines }}</md-table-cell>
-      </md-table-row>
-    </md-table>
-  </div>
-    </md-content>
-    </div>
-    </md-app-content>
+      </md-app-content>
     </md-app>
   </div>
 </template>
 
 <script>
+// import axios from "axios";
+
 export default {
   name: "SimulationResult",
   data: () => ({
-      people: [
-        {
-          Amount: '------',
-          RepaymentPeriod: '------',
-          NumberOfYears: '------',
-          Rate: '------',
-          Deadlines: '------'
-        }
-      ]
-    }),
-    methods: {
-      onSelect (items) {
-        this.selected = items
-      },
-      getAlternateLabel (count) {
-        let plural = ''
-
-        if (count > 1) {
-          plural = 's'
-        }
-
-        return `${count} simulation${plural} selected`
+    total: [],
+    selected: ""
+  }),
+  created() {
+    fetch("http://localhost:8080/simulationResult", {
+      method: "GET",
+      headers: { "content-type": "application/json" }
+    })
+      .then(response => response.json())
+      .then(data => (this.total = data));
+  },
+  methods: {
+    remove(index) {
+      var obj = { index: index };
+      fetch("http://localhost:8080/remove", {
+        method: "POST",
+        body: JSON.stringify(obj),
+        headers: { "content-type": "application/json" }
+      })
+        .then(response => response.json())
+        .then(data => (this.total = data));
+    },
+    onSelect(total) {
+      this.selected = total;
+    },
+    getAlternateLabel(count) {
+      let plural = "";
+      if (count > 1) {
+        plural = "s";
       }
+      return `${count} simulation${plural} selected`;
     }
   }
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -120,24 +145,27 @@ export default {
 }
 
 .md-table + .md-table {
-    margin-top: 16px
-  }
+  margin-top: 16px;
+}
 
 h3 {
   display: inline-block;
-  margin: 30px
+  margin: 30px;
 }
- .md-app {
-    min-height: 350px;
-    border: 1px solid rgba(#000, .12);
-  }
+.md-app {
+  min-height: 350px;
+  border: 1px solid rgba(#000, 0.12);
+}
 
-  .md-drawer {
-    width: 230px;
-    max-width: calc(100vw - 125px);
-  }
-  .md-mail {
-    margin-left: 80%;
-    font-size: 25px;
-  }
+.md-drawer {
+  width: 230px;
+  max-width: calc(100vw - 125px);
+}
+.md-mail {
+  margin-left: 80%;
+  font-size: 25px;
+}
+span {
+  cursor: pointer;
+}
 </style>

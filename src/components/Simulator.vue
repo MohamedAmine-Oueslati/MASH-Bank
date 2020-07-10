@@ -100,7 +100,7 @@
             </div>
           </div>
           <router-link to="/result">
-          <md-button class="md-primary md-raised" @click="loanType = 'Car'">Calculate</md-button>
+            <md-button class="md-primary md-raised" @click="submit" >Calculate</md-button>
           </router-link>
         </div>
       </md-app-content>
@@ -110,12 +110,31 @@
 
 <script>
 export default {
-  name: "Simulator"
-  // data: () => ({
-  //   movie: "godfather",
-  //   country: null,
-  //   font: null
-  // })
+  name: "Simulator",
+  data: () => ({
+    numOfYears: "",
+    loanType: "",
+    amount: "",
+    frequency: "",
+    index: 0
+  }),
+  methods: {
+    submit() {
+      const obj = {
+        index: this.index,
+        loanType: this.loanType,
+        numOfYears: this.numOfYears,
+        amount: this.amount,
+        frequency: this.frequency
+      };
+      this.index = this.index + 1
+      fetch("http://localhost:8080/simulator", {
+        method: "POST",
+        body: JSON.stringify(obj),
+        headers: { "content-type": "application/json" }
+      });
+    }
+  }
 };
 </script>
 
@@ -131,17 +150,17 @@ export default {
 .md-layout-item {
   display: block;
 }
- .md-app {
-    min-height: 350px;
-    border: 1px solid rgba(#000, .12);
-  }
+.md-app {
+  min-height: 350px;
+  border: 1px solid rgba(#000, 0.12);
+}
 
-  .md-drawer {
-    width: 230px;
-    max-width: calc(100vw - 125px);
-  }
-  .md-mail {
-    margin-left: 80%;
-    font-size: 25px;
-  }
+.md-drawer {
+  width: 230px;
+  max-width: calc(100vw - 125px);
+}
+.md-mail {
+  margin-left: 80%;
+  font-size: 25px;
+}
 </style>

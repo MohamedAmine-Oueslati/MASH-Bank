@@ -53,10 +53,10 @@
               <md-field>
                 <label for="time">Time</label>
                 <md-select v-model="time" name="time" id="time" class="styleInput">
-                  <md-option value="08to10">08:00 AM - 10:00 AM</md-option>
-                  <md-option value="10to12">10:00 AM - 12:00 AM</md-option>
-                  <md-option value="02to04">02:00 PM - 04:00 PM</md-option>
-                  <md-option value="04to06">04:00 PM - 06:00 PM</md-option>
+                  <md-option value="08:00 AM - 10:00 AM">08:00 AM - 10:00 AM</md-option>
+                  <md-option value="10:00 AM - 12:00 AM">10:00 AM - 12:00 AM</md-option>
+                  <md-option value="02:00 PM - 04:00 PM">02:00 PM - 04:00 PM</md-option>
+                  <md-option value="04:00 PM - 06:00 PM">04:00 PM - 06:00 PM</md-option>
                 </md-select>
               </md-field>
             </div>
@@ -65,17 +65,17 @@
               <md-field>
                 <label for="place">Place</label>
                 <md-select v-model="place" name="place" id="place" class="styleInput">
-                  <md-option value="ariana">Ariana</md-option>
-                  <md-option value="tunis">Tunis</md-option>
-                  <md-option value="ben arous">Ben Arous</md-option>
-                  <md-option value="mahdia">Mahdia</md-option>
-                  <md-option value="sousse">Sousse</md-option>
+                  <md-option value="Ariana">Ariana</md-option>
+                  <md-option value="Tunis">Tunis</md-option>
+                  <md-option value="Ben Arous">Ben Arous</md-option>
+                  <md-option value="Mahdia">Mahdia</md-option>
+                  <md-option value="Sousse">Sousse</md-option>
                 </md-select>
               </md-field>
             </div>
           </div>
-          <router-link to = "/processed">
-          <md-button class="md-primary md-raised" @click="loanType = 'Car'">Submit</md-button>
+          <router-link to="/processed">
+            <md-button class="md-primary md-raised" @click="appoint">Submit</md-button>
           </router-link>
         </div>
       </md-app-content>
@@ -85,7 +85,26 @@
 
 <script>
 export default {
-  name: "Appointment"
+  name: "Appointment",
+  data: () => ({
+    date: "",
+    time: "",
+    place: ""
+  }),
+  methods: {
+    appoint() {
+      const obj1 = {
+        date: this.date,
+        time: this.time,
+        place: this.place
+      };
+      fetch("http://localhost:8080/appointment", {
+        method: "POST",
+        body: JSON.stringify(obj1),
+        headers: { "content-type": "application/json" }
+      });
+    }
+  }
 };
 </script>
 
@@ -101,17 +120,17 @@ export default {
 .md-layout-item {
   display: block;
 }
-  .md-app {
-    min-height: 350px;
-    border: 1px solid rgba(#000, .12);
-  }
+.md-app {
+  min-height: 350px;
+  border: 1px solid rgba(#000, 0.12);
+}
 
-  .md-drawer {
-    width: 230px;
-    max-width: calc(100vw - 125px);
-  }
-  .md-mail {
-    margin-left: 80%;
-    font-size: 25px;
-  }
+.md-drawer {
+  width: 230px;
+  max-width: calc(100vw - 125px);
+}
+.md-mail {
+  margin-left: 80%;
+  font-size: 25px;
+}
 </style>
