@@ -63,12 +63,12 @@
                   id="numOfYears"
                   class="styleInput"
                 >
-                  <md-option value="one">1</md-option>
-                  <md-option value="two">2</md-option>
-                  <md-option value="three">3</md-option>
-                  <md-option value="four">4</md-option>
-                  <md-option value="five">5</md-option>
-                  <md-option value="six">6</md-option>
+                  <md-option value="1">1</md-option>
+                  <md-option value="2">2</md-option>
+                  <md-option value="3">3</md-option>
+                  <md-option value="4">4</md-option>
+                  <md-option value="5">5</md-option>
+                  <md-option value="6">6</md-option>
                 </md-select>
               </md-field>
             </div>
@@ -100,7 +100,7 @@
             </div>
           </div>
           <router-link to="/result">
-            <md-button class="md-primary md-raised" @click="submit" >Calculate</md-button>
+            <md-button class="md-primary md-raised" @click="submit">Calculate</md-button>
           </router-link>
         </div>
       </md-app-content>
@@ -116,18 +116,19 @@ export default {
     loanType: "",
     amount: "",
     frequency: "",
-    index: 0
+    rate: "",
+    deadlines: "",
   }),
   methods: {
     submit() {
       const obj = {
-        index: this.index,
         loanType: this.loanType,
         numOfYears: this.numOfYears,
         amount: this.amount,
-        frequency: this.frequency
+        frequency: this.frequency,
+        rate: this.rate,
+        deadlines: this.deadlines
       };
-      this.index = this.index + 1
       fetch("http://localhost:8080/simulator", {
         method: "POST",
         body: JSON.stringify(obj),

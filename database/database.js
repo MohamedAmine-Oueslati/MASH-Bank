@@ -34,11 +34,12 @@ const userSchema = new mongoose.Schema({
   exports.User = mongoose.model("User", userSchema);
 
   const simulationSchema = new mongoose.Schema({
-    index: { type: Number },
     loanType: { type: String },
     numOfYears: { type: String },
     amount: { type: String },
     frequency: { type: String },
+    rate: { type: Number },
+    deadlines: { type: Number },
   });
   exports.Simulation = mongoose.model("Simulation", simulationSchema);
 

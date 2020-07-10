@@ -70,6 +70,7 @@ app.get("/simulationResult", (req, res) => {
     if (err) {
       res.status(404).send(err)
     } else {
+      console.log(credit(data))
       res.send(data)
     }
   })
@@ -85,6 +86,45 @@ app.get("/scheduled", (req, res) => {
     }
   })
 });
+
+function credit(data) {
+  for (var i = 0; i < data.length; i++) {
+    if (data[i].loanType === "home") {
+      if (Number(data[i].numOfYears) === 1 || Number(data[i].numOfYears === 2)) {
+        data[i]["rate"] = 8.2
+      } else {
+        data[i]["rate"] = 8.6
+      }
+    }
+    else if (data[i].loanType === "studies") {
+      if (Number(data[i].numOfYears) === 1 || Number(data[i].numOfYears === 2)) {
+        data[i]["rate"] = 2.4
+      } else {
+        data[i]["rate"] = 2.7
+      }
+    }
+    else if (data[i].loanType === "car") {
+      if (Number(data[i].numOfYears) === 1 || Number(data[i].numOfYears === 2)) {
+        data[i]["rate"] = 4.8
+      } else {
+        data[i]["rate"] = 5.1
+      }
+    }
+    if (data[i].frequency === "monthly") {
+      data[i].deadlines = 12 * Number(data[i].numOfYears)
+    }
+    else if (data[i].frequency === "per quarter") {
+      data[i].deadlines = 4 * Number(data[i].numOfYears)
+    }
+    else if (data[i].frequency === "per semester") {
+      data[i].deadlines = 2 * Number(data[i].numOfYears)
+    }
+    else if (data[i].frequency === "yearly") {
+      data[i].deadlines = Number(data[i].numOfYears)
+    }
+  }
+ return data
+}
 
 app.post("/remove", (req, res) => {
   const Simulation = db.Simulation;

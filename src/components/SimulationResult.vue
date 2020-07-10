@@ -76,8 +76,8 @@
                   <md-table-cell>{{ element.amount }}</md-table-cell>
                   <md-table-cell>{{ element.frequency }}</md-table-cell>
                   <md-table-cell>{{ element.numOfYears }}</md-table-cell>
-                  <md-table-cell>%</md-table-cell>
-                  <md-table-cell></md-table-cell>
+                  <md-table-cell>{{ element.rate }}%</md-table-cell>
+                  <md-table-cell>{{ (element.amount +((element.amount/100)*element.rate)) /element.deadlines }}</md-table-cell>
                   <md-table-cell><span @click="remove(index)"><md-icon>delete</md-icon></span></md-table-cell>
                 </md-table-row>
               </md-table>
